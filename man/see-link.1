@@ -1,0 +1,23 @@
+.\" Manpage for see-link.
+.\" Contact Mohammed Ismail Ansari <team.terminal@gmail.com> to correct errors or typos.
+.TH see-link 1 "06/13/2023" "0.1.0"
+.SH NAME
+see-link \- A tool to simplify working with external displays on Linux
+.SH SYNOPSIS
+.B see-link
+[\fISUBCOMMAND\fR]
+[\fIARG\fR]
+.SH DESCRIPTION
+.B see-link
+connects or disconnects the available display devices as specified or needed.
+.SH SUBCOMMANDS
+.TP
+.BR connect " " \fIdirection\fR
+Connects displays in the \fIdirection\fR with respect to the primary device. This could be "left", "right", etc.
+.TP
+.BR disconnect
+Disconnects all available displays.
+.SH BUGS
+No known bugs.
+.SH AUTHOR
+Mohammed Ismail Ansari (team.terminal@gmail.com)
