@@ -3,7 +3,7 @@
 
 (in-package :main)
 
-(defun connect-or-disconnect (primary-device external-devices disconnected-devices position)
+(defun connect-or-disconnect (primary-device devices-to-connect devices-to-disconnect position)
   "Connects all supplied connected displays."
   (if (not (member position '("left" "right") :test #'string-equal))
       (princ "Please specify \"left/right\"!")
@@ -18,14 +18,14 @@
                                                                 "\"" d "\""
                                                                 " --auto " (get-orientation position) " "
                                                                 "\"" primary-device "\" "))
-                                                 external-devices))
+                                                 devices-to-connect))
                                   (apply #'concatenate 'string
                                          (mapcar (lambda (d)
                                                    (concatenate 'string
                                                                 "--output "
                                                                 "\"" d "\""
                                                                 " --off "))
-                                                 disconnected-devices))))))
+                                                 devices-to-disconnect))))))
 
 (defun main ()
   "The main entry point to the program."
@@ -43,14 +43,16 @@
                                                                        (string-equal (cadr (string-to-list x #\ )) "disconnected"))
                                                                      (get-list-from-system "xrandr")))))
            (primary-device (car connected-devices))
-           (external-devices (cdr connected-devices)))
+           (external-devices (cdr connected-devices))
+           (devices-to-connect (if (string-equal (first args) "disconnect")
+                                   nil
+                                   external-devices))
+           (devices-to-disconnect (if (string-equal (first args) "disconnect")
+                                      (concatenate 'list
+                                                   external-devices
+                                                   disconnected-devices)
+                                      disconnected-devices)))
       (connect-or-disconnect primary-device
-                             (if (string-equal (first args) "disconnect")
-                                 nil
-                                 external-devices)
-                             (if (string-equal (first args) "disconnect")
-                                 (concatenate 'list
-                                              external-devices
-                                              disconnected-devices)
-                                 disconnected-devices)
+                             devices-to-connect
+                             devices-to-disconnect
                              (or (second args) "left")))))
