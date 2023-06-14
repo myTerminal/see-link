@@ -7,25 +7,25 @@
   "Connects all supplied connected displays."
   (if (not (member position '("left" "right") :test #'string-equal))
       (princ "Please specify \"left/right\"!")
-      (log-to-stdout (concatenate 'string
-                                  "xrandr --output "
-                                  "\"" primary-device "\""
-                                  " --auto "
-                                  (apply #'concatenate 'string
-                                         (mapcar (lambda (d)
-                                                   (concatenate 'string
-                                                                "--output "
-                                                                "\"" d "\""
-                                                                " --auto " (get-orientation position) " "
-                                                                "\"" primary-device "\" "))
-                                                 devices-to-connect))
-                                  (apply #'concatenate 'string
-                                         (mapcar (lambda (d)
-                                                   (concatenate 'string
-                                                                "--output "
-                                                                "\"" d "\""
-                                                                " --off "))
-                                                 devices-to-disconnect))))))
+      (execute-in-system (concatenate 'string
+                                      "xrandr --output "
+                                      "\"" primary-device "\""
+                                      " --auto "
+                                      (apply #'concatenate 'string
+                                             (mapcar (lambda (d)
+                                                       (concatenate 'string
+                                                                    "--output "
+                                                                    "\"" d "\""
+                                                                    " --auto " (get-orientation position) " "
+                                                                    "\"" primary-device "\" "))
+                                                     devices-to-connect))
+                                      (apply #'concatenate 'string
+                                             (mapcar (lambda (d)
+                                                       (concatenate 'string
+                                                                    "--output "
+                                                                    "\"" d "\""
+                                                                    " --off "))
+                                                     devices-to-disconnect))))))
 
 (defun main ()
   "The main entry point to the program."
