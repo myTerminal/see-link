@@ -30,18 +30,19 @@
 (defun main ()
   "The main entry point to the program."
   (let* ((args (uiop:command-line-arguments)))
-    (Let* ((connected-devices (concatenate 'list
+    (Let* ((xrandr-devices (get-list-from-system "xrandr"))
+           (connected-devices (concatenate 'list
                                            (mapcar (lambda (x)
                                                      (car (string-to-list x #\ )))
                                                    (remove-if-not (lambda (x)
                                                                     (string-equal (cadr (string-to-list x #\ )) "connected"))
-                                                                  (get-list-from-system "xrandr")))))
+                                                                  xrandr-devices))))
            (disconnected-devices (concatenate 'list
                                               (mapcar (lambda (x)
                                                         (car (string-to-list x #\ )))
                                                       (remove-if-not (lambda (x)
                                                                        (string-equal (cadr (string-to-list x #\ )) "disconnected"))
-                                                                     (get-list-from-system "xrandr")))))
+                                                                     xrandr-devices))))
            (primary-device (car connected-devices))
            (external-devices (cdr connected-devices))
            (devices-to-connect (if (string-equal (first args) "disconnect")
