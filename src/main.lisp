@@ -7,7 +7,22 @@
   "Connects all supplied connected displays."
   (if (not (member position '("left" "right") :test #'string-equal))
       (princ "Please specify \"left/right\"!")
-      (log-to-stdout (concatenate 'string
+      (execute-in-system (concatenate 'string
+                                      "xrandr --output "
+                                      "\"" primary-device "\""
+                                      " --auto "
+                                      (apply #'concatenate 'string
+                                             (mapcar (lambda (d)
+                                                       (concatenate 'string
+                                                                    "--output "
+                                                                    "\"" d "\""
+                                                                    " --auto " (get-orientation position) " "
+                                                                    "\"" primary-device "\" "))
+                                                     external-devices))))))
+
+(defun disconnect-external-displays (primary-device external-devices)
+  "Connects all supplied connected displays."
+  (execute-in-system (concatenate 'string
                                   "xrandr --output "
                                   "\"" primary-device "\""
                                   " --auto "
@@ -16,23 +31,8 @@
                                                    (concatenate 'string
                                                                 "--output "
                                                                 "\"" d "\""
-                                                                " --auto " (get-orientation position) " "
-                                                                "\"" primary-device "\" "))
-                                                 external-devices))))))
-
-(defun disconnect-external-displays (primary-device external-devices)
-  "Connects all supplied connected displays."
-  (log-to-stdout (concatenate 'string
-                              "xrandr --output "
-                              "\"" primary-device "\""
-                              " --auto "
-                              (apply #'concatenate 'string
-                                     (mapcar (lambda (d)
-                                               (concatenate 'string
-                                                            "--output "
-                                                            "\"" d "\""
-                                                            " --off "))
-                                             external-devices)))))
+                                                                " --off "))
+                                                 external-devices)))))
 
 (defun main ()
   "The main entry point to the program."
