@@ -13,28 +13,29 @@ help:
 	@echo " - reinstall"
 	@echo " - update"
 
+crater-get:
+	@echo "Setting up Crater for temporary use..."
+	git clone https://github.com/crater-space/cli /tmp/crater-cli
+
 primary-deps:
 	@echo "Making sure SBCL is installed..."
 ifneq ($(shell command -v sbcl),)
 	@echo "SBCL found."
-else ifneq ($(shell command -v xbps-query),)
-	sudo xbps-install -Syu sbcl
-else ifneq ($(shell command -v pacman),)
-	sudo pacman -Sy sbcl
-else ifneq ($(shell command -v dnf),)
-	sudo dnf install -y sbcl
-else ifneq ($(shell command -v apt),)
-	sudo apt install -y sbcl
 else
-	@echo "Could not determine steps to install SBCL! Please install SBCL and try again."
-	exit 1
+	@echo "SBCL not found!"
+	@echo "Attemping to install SBCL using Crater..."
+	/tmp/crater-cli/crater install sbcl
 endif
-	@echo "Looking for external dependencies..."
+	@echo "Looking for 'xrandr'..."
 ifeq ($(shell command -v xrandr),)
-	@echo "'xrandr' not found!"
+	@echo "'xrandr' not found! Are you running X11?"
 	exit 1
 endif
 	@echo "All required dependencies found."
+
+crater-remove:
+	@echo "Removing Crater..."
+	rm -rf /tmp/crater-cli
 
 quicklisp:
 ifeq ("$(wildcard $(QUICKLISP_DIR))", "")
@@ -63,7 +64,9 @@ manpage:
 	sudo rsync ./man/see-link.1 $(MANPREFIX)/man1/
 	@echo "Manpage created."
 
-install: primary-deps quicklisp binary place manpage
+req: crater-get primary-deps crater-remove
+
+install: req quicklisp binary place manpage
 	@echo "see-link is now installed."
 
 uninstall:
