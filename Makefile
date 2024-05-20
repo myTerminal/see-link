@@ -60,7 +60,7 @@ place:
 
 manpage:
 	@echo "Creating manpage..."
-	mkdir -p $(MANPREFIX)/man1
+	sudo mkdir -p $(MANPREFIX)/man1
 	sudo cp ./man/see-link.1 $(MANPREFIX)/man1/
 	@echo "Manpage created."
 
