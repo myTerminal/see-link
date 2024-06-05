@@ -23,7 +23,7 @@ ifneq ($(shell command -v sbcl),)
 	@echo "SBCL found."
 else
 	@echo "SBCL not found!"
-	@echo "Attemping to install SBCL using Crater..."
+	@echo "Attempting to install SBCL using Crater..."
 	/tmp/crater-cli/crater install sbcl
 endif
 	@echo "Looking for 'xrandr'..."
