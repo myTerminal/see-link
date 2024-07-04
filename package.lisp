@@ -1,7 +1,7 @@
 (defpackage :utils
   (:use :cl)
   (:export :string-to-list
-           :get-orientation))
+           :get-xrandr-orientation))
 
 (defpackage :shell
   (:use :cl)
@@ -15,7 +15,7 @@
   (:use :cl)
   (:import-from :utils
                 :string-to-list
-                :get-orientation)
+                :get-xrandr-orientation)
   (:import-from :shell
                 :log-to-stdout
                 :execute-in-system

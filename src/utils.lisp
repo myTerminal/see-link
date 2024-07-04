@@ -19,7 +19,7 @@
       (collect-item)
       (reverse items))))
 
-(defun get-orientation (position)
+(defun get-xrandr-orientation (position)
   "Gets direction string for xrandr."
   (if (string-equal position "left")
       "--left-of"

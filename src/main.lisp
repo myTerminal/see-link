@@ -16,7 +16,7 @@
                                                        (concatenate 'string
                                                                     "--output "
                                                                     "\"" d "\""
-                                                                    " --auto " (get-orientation position) " "
+                                                                    " --auto " (get-xrandr-orientation position) " "
                                                                     "\"" primary-device "\" "))
                                                      devices-to-connect))
                                       (apply #'concatenate 'string
