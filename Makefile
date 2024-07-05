@@ -26,11 +26,6 @@ else
 	@echo "Attempting to install SBCL using Crater..."
 	/tmp/crater-cli/crater install sbcl
 endif
-	@echo "Looking for 'xrandr'..."
-ifeq ($(shell command -v xrandr),)
-	@echo "'xrandr' not found! Are you running X11?"
-	exit 1
-endif
 	@echo "All required dependencies found."
 
 crater-remove:
