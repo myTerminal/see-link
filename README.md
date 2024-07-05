@@ -37,6 +37,8 @@ By default, any available external display(s) will be attached to the left of th
 
 The above command would connect external displays to the right of the primary device.
 
+> **Note:**: Device direction is currently only supported for Xorg.
+
 In order to disconnect, simply run the below command.
 
     see-link disconnect
@@ -70,7 +72,8 @@ Being written with Common Lisp, *see-link* depends on [SBCL](https://www.sbcl.or
 
 The other required programs are as follows:
 
- - [xrandr](https://www.x.org/releases/X11R7.5/doc/man/man1/xrandr.1.html), and that also implies that currently , *see-link* only works on [Xorg](https://www.x.org).
+ - [xrandr](https://www.x.org/releases/X11R7.5/doc/man/man1/xrandr.1.html) for [Xorg](https://www.x.org) sessions.
+ - [wlr-randr](https://sr.ht/~emersion/wlr-randr) for [Wayland](https://wayland.freedesktop.org)
 
 ## To-do
 
