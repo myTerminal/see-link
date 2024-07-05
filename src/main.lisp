@@ -3,8 +3,12 @@
 
 (in-package :main)
 
-(defun connect-or-disconnect (primary-device devices-to-connect devices-to-disconnect position)
-  "Connects all supplied connected displays."
+(defun run-for-wayland (args)
+  "Run routine for Wayland."
+  (princ "Running for Wayland, not implemented yet!"))
+
+(defun connect-or-disconnect-for-xorg (primary-device devices-to-connect devices-to-disconnect position)
+  "Connects all supplied connected displays, and disconnect the rest, for Xorg."
   (if (not (member position '("left" "right") :test #'string-equal))
       (princ "Please specify \"left/right\"!")
       (execute-in-system (concatenate 'string
@@ -27,10 +31,9 @@
                                                                     " --off "))
                                                      devices-to-disconnect))))))
 
-(defun main ()
-  "The main entry point to the program."
-  (let* ((args (uiop:command-line-arguments))
-         (xrandr-devices (get-list-from-system "xrandr"))
+(defun run-for-xorg (args)
+  "Run routine for Xorg."
+  (let* ((xrandr-devices (get-list-from-system "xrandr"))
          (connected-devices (concatenate 'list
                                          (mapcar (lambda (x)
                                                    (car (string-to-list x #\ )))
@@ -53,7 +56,16 @@
                                                  external-devices
                                                  disconnected-devices)
                                     disconnected-devices)))
-    (connect-or-disconnect primary-device
-                           devices-to-connect
-                           devices-to-disconnect
-                           (or (second args) "left"))))
+    (connect-or-disconnect-for-xorg primary-device
+                                    devices-to-connect
+                                    devices-to-disconnect
+                                    (or (second args) "left"))))
+
+(defun main ()
+  "The main entry point to the program."
+  (let* ((args (uiop:command-line-arguments))
+         (session-type (get-result-from-system "echo $XDG_SESSION_TYPE")))
+    (if (string-equal session-type
+                      "wayland")
+        (run-for-wayland args)
+        (run-for-xorg args))))

@@ -9,6 +9,7 @@
                 :string-to-list)
   (:export :log-to-stdout
            :execute-in-system
+           :get-result-from-system
            :get-list-from-system))
 
 (defpackage :main
@@ -19,5 +20,6 @@
   (:import-from :shell
                 :log-to-stdout
                 :execute-in-system
+                :get-result-from-system
                 :get-list-from-system)
   (:export :main))
